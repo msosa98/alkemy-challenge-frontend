@@ -1,5 +1,10 @@
+import GetStarted from "./views/GetStarted";
+import "./App.css";
+
 const App = () => {
   return (
-    <h1>Hola Mundo</h1>
+    <GetStarted />
   )
 }
+
+export default App;
