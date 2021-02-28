@@ -1,10 +1,7 @@
-import GetStarted from "./views/GetStarted";
+import React from "react";
+import { PublicRoutes } from "./routes/PublicRoutes";
 import "./App.css";
 
-const App = () => {
-  return (
-    <GetStarted />
-  )
-}
-
-export default App;
+export const App = () => {
+  return <PublicRoutes />;
+};
