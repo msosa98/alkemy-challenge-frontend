@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../helpers/login";
-import { showAlert } from "../helpers/showAlert";
 import { signin } from "../redux/actions/authActions";
-import { Spinner } from "./Spinner";
+import { loadBalance, loadOperations } from "../redux/actions/operationActions";
+import { login } from "../helpers/login";
+import { getOperations } from "../helpers/getOperations";
+import { showAlert } from "../helpers/showAlert";
+import { getBalance } from "../helpers/getBalance";
 
 export const FormLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -29,12 +30,15 @@ export const FormLogin = () => {
       setErrorMessage("Missing Fields");
     } else {
       try {
-        setLoading(true);
-        const user = await login(email, password).then(setLoading(false));
-        dispatch(signin(user));
         setError(false);
+        const creds = await login(email, password);
+        const operations = await getOperations(creds.token, creds.user);
+        const balance = await getBalance(creds.token, creds.user);
+        dispatch(loadOperations(operations));
+        dispatch(loadBalance(balance));
+        dispatch(signin(creds));
       } catch (e) {
-        setLoading(false);
+        console.log(e);
         setError(true);
         setErrorMessage("The username or password is incorrect");
       }
@@ -66,7 +70,6 @@ export const FormLogin = () => {
       </div>
       <div className="form-group form-check" />
       <button className="btn btn-primary btn-block">Sign In</button>
-      <div className="spinner-container">{loading && <Spinner />}</div>
       {error && showAlert("danger", errorMessage)}
     </form>
   );

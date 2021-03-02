@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { register } from "../helpers/register";
 import { showAlert } from "../helpers/showAlert";
-import { Spinner } from "./Spinner";
 
 export const FormRegister = () => {
   const [firstname, setFirstname] = useState("");
@@ -10,7 +9,6 @@ export const FormRegister = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [logged, setLogged] = useState(false);
 
   const handleChangeFirstname = (e) => {
@@ -32,19 +30,14 @@ export const FormRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!firstname || !lastname || !email || !password) {
-      setLogged(false);
       setError(true);
       setErrorMessage("Missing Fields");
     } else {
       try {
-        setLoading(true);
-        await register(firstname, lastname, email, password)
-          .then(setLoading(false))
-          .then(setLogged(true));
+        await register(firstname, lastname, email, password);
+        setLogged(true);
         setError(false);
       } catch (e) {
-        setLogged(false);
-        setLoading(false);
         setError(true);
         setErrorMessage("The email already exists");
       }
@@ -91,7 +84,6 @@ export const FormRegister = () => {
         />
       </div>
       <button className="btn btn-primary btn-block">Sign Up</button>
-      <div className="spinner-container">{loading && <Spinner />}</div>
       {error && showAlert("danger", errorMessage)}
       {logged && showAlert("success", "Successfully registered user", true)}
     </form>
