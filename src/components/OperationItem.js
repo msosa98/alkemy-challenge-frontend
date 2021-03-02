@@ -29,6 +29,7 @@ export const OperationItem = ({ id, amount, concept, date, typeID, categoryID, u
         ) : (
           <h5 className="text-success">+${amount}</h5>
         )}
+        <p className="card-text">{date.split('T')[0]}</p>
         <p className="card-text">{concept}</p>
         <Link to={"/edit"} className="btn btn-primary mr-4" onClick={handleEdit}>
           Edit

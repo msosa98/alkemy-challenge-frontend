@@ -13,7 +13,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-primary bg-light border mb-5">
+    <nav className="navbar navbar-primary bg-light border mb-4">
       <div className="container">
         <Link to="/dashboard" className="navbar-brand text-dark">
           {user.firstname} {user.lastname}
